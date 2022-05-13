@@ -1,27 +1,48 @@
+
+const fl = "somefile.txt";
+
 const fs = require("fs");
-const path = process.env.FILENAME || "somefile.txt";
-const lines = 3;
+const readline = require("readline");
 
-function readLinesFromFile(path, lines) {
-   try{
-    fs.readFile(path, (err, data) => {
-    data = data.toString().split(/\r?\n/);
-    const end = data.length;
-    const start = end - lines;
-    console.log(data.slice(start, end));
+const linesCounter = async (fileName , lines) => {
+  let cStream = fs.createReadStream(fileName);
+  const arr = []
+
+
+  const linesCount = await new Promise((resolve, reject) => {
+
+    let rl = readline.createInterface(cStream);
+    let count = 0;
+    rl.on("line", function () {
+      count++;
+    });
+    rl.on("error", reject);
+    rl.on("close", function () {
+      resolve(count);
+    });
   });
-   }catch(err){
-        throw err
-   }
-    
-}
 
 
-readLinesFromFile(path, lines);
-process.on('uncaughtException', function (err) {
-    console.error(err.message)
-    process.exit(1)
-})
+  let resStream = fs.createReadStream(fileName);
+  
+  return await new Promise((resolve, reject) => {
+    let rl_1 = readline.createInterface(resStream);
+    let start = 0;
+
+    rl_1.on("line", function (line) {
+      start++;
+      if (start > linesCount - lines) {
+        arr.push(line);
+      }
+    });
+    rl_1.on("close", function () {
+      resolve(arr);
+    });
+  });
+  
+};
+
+linesCounter(fl , 5).then(data => console.log(data))
 
 
 

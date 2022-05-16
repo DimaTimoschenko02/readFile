@@ -71,4 +71,12 @@ function readLinesFromFile(path, maxLineCount) {
       })
   });
 }
-readLinesFromFile('somefile.txt' , 5).then(res => console.log(res))
+async function timeTest(){
+  let st =  new Date().getTime();
+  const res = await readLinesFromFile('t.txt' , 50000)
+  console.log('get res')
+  let fn =  new Date().getTime();
+  console.log(`ThirdWay: ${fn - st}ms`)
+}
+//readLinesFromFile('somefile.txt' , 5).then(res => console.log(res))
+timeTest()

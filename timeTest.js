@@ -6,9 +6,9 @@ const readline = require("readline");
 
 
 const path = 't.txt'
-const lines = 100
 
-function testfoo(){
+
+function testfoo(lines){
   const start= new Date().getTime();
   function readLinesFromFile(path , lines){
     fs.readFile(path, async (err, data) => {
@@ -17,7 +17,7 @@ function testfoo(){
     const end = data.length
     const start = end - lines
     data.slice(start , end)
-    console.log('sliced')
+    console.log('data.slice(start , end)')
     const en = new Date().getTime();
     console.log(`firtway: ${en - start}ms`);
     });
@@ -34,7 +34,6 @@ function testfoo(){
 
 
 
-let  start= new Date().getTime();
 const linesCounter = async (fileName , lines) => {
   start = new Date().getTime();
   let cStream = fs.createReadStream(fileName);
@@ -73,13 +72,15 @@ const linesCounter = async (fileName , lines) => {
   });
   
 };
-async function foo(){
-  const data = await linesCounter(fl , 100)
-  console.log('data recieved')
+async function foo(lines){
+  
+  let  start= new Date().getTime();
+  const data = await linesCounter(fl , lines)
+  console.log('data')
   const end = new Date().getTime();
 console.log(`SecondWay: ${end - start}ms`);
 }
-//rsfoo()
-testfoo()
+foo(50000)
+testfoo(50000)
 
 

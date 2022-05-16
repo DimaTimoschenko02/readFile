@@ -1,0 +1,1 @@
+my method works even faster then method that i finded
